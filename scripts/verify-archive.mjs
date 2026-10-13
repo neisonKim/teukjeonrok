@@ -1,0 +1,67 @@
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {readFile,mkdtemp,rm} from 'node:fs/promises';
+import {join} from 'node:path';
+import {tmpdir} from 'node:os';
+import {pathToFileURL} from 'node:url';
+const require=createRequire(import.meta.url);
+const {build}=require('esbuild');
+const originalFetch=globalThis.fetch;const originalEnv={NEXT_PUBLIC_ENABLE_METRICS:process.env.NEXT_PUBLIC_ENABLE_METRICS,SUPABASE_URL:process.env.SUPABASE_URL,SUPABASE_SECRET_KEY:process.env.SUPABASE_SECRET_KEY};
+const dir=await mkdtemp(join(tmpdir(),'teukjeonrok-check-'));
+try{
+ await build({entryPoints:['app/archive-index.ts','app/api/metrics/route.ts','app/MobileMenu.tsx','app/ComparisonTable.tsx','app/section-navigation.ts'],outdir:dir,bundle:true,platform:'node',format:'esm',packages:'external',outbase:'app',plugins:[{name:'next-test-binding',setup(b){b.onResolve({filter:/^next\/navigation$/},()=>({path:'navigation',namespace:'test'}));b.onLoad({filter:/.*/,namespace:'test'},()=>({contents:'export function usePathname(){return "/"}',loader:'js'}))}}]});
+ // Keep external React and icon imports resolvable from temporary bundles.
+ const {symlink}=await import('node:fs/promises');await symlink(join(process.cwd(),'node_modules'),join(dir,'node_modules'),process.platform==='win32'?'junction':'dir');
+ const {archiveEntries,entryPath,findEntry,searchEntries,parseSearchKind}=await import(pathToFileURL(join(dir,'archive-index.js')));
+ const {sectionIds,resolveSectionNavigation,sectionScrollTop}=await import(pathToFileURL(join(dir,'section-navigation.js')));
+ for(const id of sectionIds){const n=resolveSectionNavigation('#'+id);assert.equal(n.section,id);assert.equal(n.anchor,'#'+id);}
+ assert.equal(resolveSectionNavigation('#top').section,null);
+ assert.equal(sectionScrollTop(1100,900,89),1911);
+ assert.equal(sectionScrollTop(1100,900,77),1923);
+ assert.equal(sectionScrollTop(0,0,89),0);
+ assert.equal(resolveSectionNavigation('#intelligence').section,'forces');
+ assert.equal(resolveSectionNavigation('#unknown'),null);assert.equal(resolveSectionNavigation('#%invalid'),null);
+ const paths=archiveEntries.map(entryPath);assert.equal(new Set(paths).size,paths.length);
+ const sourceIds=new Set(archiveEntries.filter(e=>e.kind==='source').map(e=>e.id));
+ for(const e of archiveEntries){assert(e.sections.length>0);assert(e.sourceIds.length>0);for(const id of e.sourceIds)assert(sourceIds.has(id),`${entryPath(e)} has missing source ${id}`);assert.equal(findEntry(e.kind,e.id)?.title,e.title)}
+ assert(searchEntries('udt/seal','organization').some(e=>e.id==='udt'));
+ assert(searchEntries('UDT SEAL','organization').some(e=>e.id==='udt'));
+ assert(searchEntries('켈로 8240').some(e=>e.id==='klo-8240'));
+ assert(searchEntries('김용복','person').some(e=>e.id==='kim-yong-bok'));
+ assert(searchEntries('정보사 해상','organization').some(e=>e.id==='intel-sea'));
+ assert.equal(searchEntries('아무기록도없는검색1234567').length,0);
+ assert.equal(findEntry('event','missing'),undefined);
+ for(const invalid of [null,'bad','constructor','__proto__','toString'])assert.equal(parseSearchKind(invalid),'all');
+ assert.equal(parseSearchKind('organization'),'organization');assert.equal(searchEntries('', 'constructor').length,archiveEntries.length);
+ let writes=0;const captured=[];
+ process.env.NEXT_PUBLIC_ENABLE_METRICS='true';process.env.SUPABASE_URL='https://metrics.example.test';process.env.SUPABASE_SECRET_KEY='sb_secret_test_fixture';
+ globalThis.fetch=async(url,options)=>{assert.equal(String(url),'https://metrics.example.test/rest/v1/rpc/increment_metric');assert.equal(options.headers.apikey,'sb_secret_test_fixture');assert(!options.headers.Authorization);assert.equal(options.cache,'no-store');captured.push(JSON.parse(options.body));writes++;return new Response(null,{status:204})};
+ const {POST}=await import(pathToFileURL(join(dir,'api/metrics/route.js')));
+ const request=(data,headers={})=>new Request('https://archive.test/api/metrics',{method:'POST',headers:{origin:'https://archive.test','Content-Type':'application/json',...headers},body:JSON.stringify(data)});
+ assert.equal((await POST(request({event:'page_view',target:'/'}))).status,204);assert.equal(writes,1);
+ assert.equal((await POST(request({event:'search',target:'all'}))).status,204);assert.equal(writes,2);
+ assert.equal((await POST(request({event:'page_view',target:'/',email:'ignored@example.test'}))).status,204);assert(captured.every(row=>Object.keys(row).sort().join(',')==='metric_day,metric_event,metric_target'&&!JSON.stringify(row).includes('@')));
+ assert.equal((await POST(request({event:'search',target:'private search text'}))).status,400);
+ assert.equal((await POST(request({event:'page_view',target:'/'},{origin:'https://other.test'}))).status,403);
+ const proxied=new Request('http://localhost:3000/api/metrics',{method:'POST',headers:{origin:'https://archive.test',host:'archive.test','x-forwarded-proto':'https','Content-Type':'application/json'},body:JSON.stringify({event:'page_view',target:'/'})});
+ assert.equal((await POST(proxied)).status,204);
+ const before=writes;assert.equal((await POST(request({event:'page_view',target:'/'},{DNT:'1'}))).status,204);assert.equal(writes,before);
+ assert.equal((await POST(request({event:'page_view',target:'/'},{'Sec-GPC':'1'}))).status,204);assert.equal(writes,before);
+ assert.equal((await POST(request({event:'page_view',target:'/',extra:'a'.repeat(600)}))).status,413);
+ assert.equal((await POST(request({event:'invalid',target:'/'}))).status,400);
+ assert.equal((await POST(request({event:'constructor',target:'/'}))).status,400);
+ process.env.NEXT_PUBLIC_ENABLE_METRICS='false';const disabledWrites=writes;
+ assert.equal((await POST(request({event:'page_view',target:'/'}))).status,204);assert.equal(writes,disabledWrites);
+ process.env.NEXT_PUBLIC_ENABLE_METRICS='true';delete process.env.SUPABASE_SECRET_KEY;
+ assert.equal((await POST(request({event:'page_view',target:'/'}))).status,503);
+ process.env.SUPABASE_SECRET_KEY='sb_secret_test_fixture';globalThis.fetch=async()=>new Response(null,{status:503});
+ assert.equal((await POST(request({event:'page_view',target:'/'}))).status,503);
+ const React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
+ const {MobileMenu}=await import(pathToFileURL(join(dir,'MobileMenu.js')));const markup=renderToStaticMarkup(React.createElement(MobileMenu,{items:[{id:'history',label:'역사'}],active:''},React.createElement('a',{href:'/'},'특전록')));
+ assert.equal((markup.match(/id="tk-menu-toggle"/g)??[]).length,1);assert(markup.includes('aria-expanded="false"'));assert(markup.includes('hidden=""'));assert(!markup.includes('tk-menu-close'));assert(markup.includes('class="tk-header-spacer" aria-hidden="true"'));assert.equal((markup.match(/<header/g)??[]).length,1);
+ const {ComparisonTable}=await import(pathToFileURL(join(dir,'ComparisonTable.js')));const comparison=renderToStaticMarkup(React.createElement(ComparisonTable,{caption:'비교',columns:['명칭','목적','범위'],rows:[{label:'정보사',cells:['정보 확보','공개 법령']}]}));
+ assert(comparison.includes('scope="row"'));assert(comparison.includes('<dt>목적</dt><dd>정보 확보</dd>'));assert(comparison.includes('tk-comparison-mobile'));
+ const css=await readFile('app/mobile-menu.css','utf8');assert(css.includes('position:fixed'));assert(css.includes('.tk-header[data-mobile-header]{position:fixed;'));assert(css.includes('.tk-header-spacer{display:block;height:'));assert(css.includes('inset:calc(var(--tk-header-height) + 1px) 0 0;'));assert(!css.includes('position:absolute;right:0'));assert(!css.includes('tk-mobile-header'));
+ const sql=await readFile('database/metrics.sql','utf8');assert(sql.includes('metric_counts'));assert(sql.includes('on conflict (day, event, target)'));assert(sql.includes('enable row level security'));assert(sql.includes('from public, anon, authenticated'));assert(!/email|ip_address|visitor_id/.test(sql));
+ console.log(`PASS: ${archiveEntries.length} reading routes; search aliases and category filters; source integrity; anonymous metric acceptance, rejection and opt-out; single menu control, one-page section navigation and responsive comparison markup.`);
+}finally{globalThis.fetch=originalFetch;for(const [key,value] of Object.entries(originalEnv)){if(value===undefined)delete process.env[key];else process.env[key]=value}await rm(dir,{recursive:true,force:true})}

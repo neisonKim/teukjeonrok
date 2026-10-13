@@ -1,0 +1,3 @@
+export function ComparisonTable({caption,columns,rows}:{caption:string;columns:string[];rows:{label:string;cells:string[]}[]}) {
+ return <div className="tk-comparison"><div className="tk-comparison-desktop tk-klo-table-wrap"><table className="tk-klo-table"><caption>{caption}</caption><thead><tr>{columns.map(c=><th key={c} scope="col">{c}</th>)}</tr></thead><tbody>{rows.map(r=><tr key={r.label}><th scope="row">{r.label}</th>{r.cells.map((c,i)=><td key={i}>{c}</td>)}</tr>)}</tbody></table></div><div className="tk-comparison-mobile"><p className="tk-comparison-caption">{caption}</p>{rows.map(r=><article key={r.label}><h4>{r.label}</h4><dl>{r.cells.map((cell,i)=><div key={i}><dt>{columns[i+1]}</dt><dd>{cell}</dd></div>)}</dl></article>)}</div></div>;
+}

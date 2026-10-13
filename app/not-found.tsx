@@ -1,0 +1,1 @@
+export default function NotFound(){return <main className="tk-site tk-reading-page"><div className="tk-container tk-reading-intro"><h1>찾으시는 기록이 없습니다.</h1><p>주소가 바뀌었거나 존재하지 않는 항목입니다. 전체 검색에서 다시 찾아보세요.</p><a className="tk-button" href="/#records">아카이브 전체 검색</a></div></main>}

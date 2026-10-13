@@ -1,0 +1,513 @@
+.tk-share {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.tk-share button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tk-bronze);
+  background: transparent;
+  border: 1px solid #c0a16d66;
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 2px;
+}
+.tk-share [role="status"] {
+  font-size: 12px;
+  color: var(--tk-muted);
+}
+.tk-share input {
+  flex-basis: 100%;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  color: var(--tk-ink);
+  background: var(--tk-paper);
+}
+.tk-paper .tk-share button {
+  color: #79542a;
+}
+.tk-paper .tk-share [role="status"] {
+  color: #52626d;
+}
+.tk-reading-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0 26px;
+}
+.tk-reading-links a {
+  font-size: 14px;
+  color: #826034;
+  border-bottom: 1px solid #ac9266;
+  padding: 8px 0;
+}
+.tk-intelligence .tk-reading-links a {
+  color: var(--tk-bronze);
+}
+.tk-comparison-mobile {
+  display: none;
+}
+.tk-kind-select select {
+  border: 1px solid #cfc6b6;
+  background: #fcfaf5;
+  color: #425361;
+  font-size: 14px;
+  padding: 14px 18px;
+  min-height: 56px;
+  max-width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+.tk-record-controls .tk-button {
+  white-space: nowrap;
+  align-self: stretch;
+}
+.tk-search-summary {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #69767b;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+.tk-search-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.tk-search-result {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid #d4c9b7;
+  background: #fcfaf5;
+  padding: 24px;
+  transition: border-color 0.2s;
+}
+.tk-search-result:hover {
+  border-color: #967347;
+}
+.tk-result-kind {
+  color: #806039;
+  font-size: 12px;
+}
+.tk-search-result h3 {
+  font-size: 20px;
+  line-height: 1.6;
+  margin: 10px 0 !important;
+  color: #1f3543;
+  word-break: keep-all;
+}
+.tk-search-result p {
+  font-size: 14px;
+  color: #596872;
+  line-height: 1.85;
+}
+.tk-search-result > div {
+  margin-top: auto;
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: #856339;
+  align-items: flex-end;
+  font-size: 13px;
+}
+.tk-search-result small {
+  color: #778181;
+  line-height: 1.7;
+}
+.tk-search-result > div > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.tk-load-more {
+  margin-top: 22px;
+}
+.tk-revisions {
+  margin-top: 28px;
+  border-block: 1px solid #344754;
+  padding: 20px 0;
+}
+.tk-revisions summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  list-style: none;
+}
+.tk-revisions article {
+  padding-top: 22px;
+  max-width: 900px;
+}
+.tk-revisions time {
+  color: var(--tk-bronze);
+  font-size: 13px;
+}
+.tk-revisions h3 {
+  font-size: 18px;
+  margin: 10px 0 !important;
+}
+.tk-revisions p {
+  color: var(--tk-muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+.tk-reading-page {
+  padding-bottom: 30px;
+}
+.tk-reading-page > .tk-container {
+  max-width: 1000px;
+}
+.tk-reading-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 112px;
+  border-bottom: 1px solid #c0a16d44;
+}
+.tk-reading-header img {
+  width: 230px;
+  height: auto;
+}
+.tk-reading-header > a:last-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tk-bronze);
+  font-size: 14px;
+}
+.tk-back {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--tk-muted);
+  font-size: 14px;
+  margin-top: 30px;
+}
+.tk-reading-intro {
+  padding: 42px 0 28px;
+}
+.tk-reading-intro h1,
+.tk-reading-body > h1 {
+  font-family: "Batang", serif;
+  font-size: 40px;
+  line-height: 1.55;
+  font-weight: 500;
+  letter-spacing: -1px;
+  word-break: keep-all;
+  margin: 10px 0 22px;
+}
+.tk-reading-intro > p {
+  font-size: 18px;
+  color: #acbdc9;
+  line-height: 1.9;
+}
+.tk-reading-dates {
+  margin-top: 18px;
+  color: #94a7b5;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.tk-reading-image {
+  margin: 0 0 35px;
+}
+.tk-reading-image img {
+  width: 100%;
+  height: auto;
+  max-height: 550px;
+  object-fit: cover;
+}
+.tk-reading-image figcaption {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--tk-muted);
+  margin-top: 10px;
+}
+.tk-reading-body {
+  max-width: 800px;
+}
+.tk-reading-body section {
+  padding: 28px 0;
+  border-top: 1px solid #344754;
+}
+.tk-reading-body h2,
+.tk-reading-sources > h2,
+.tk-related > h2 {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.7;
+  margin: 0 0 16px;
+}
+.tk-reading-body p,
+.tk-reading-sources > p {
+  font-size: 17px;
+  line-height: 2;
+  color: #b1c1cc;
+  word-break: keep-all;
+}
+.tk-reading-sources {
+  margin-top: 40px;
+  padding: 30px;
+  background: #102130;
+  border: 1px solid #344754;
+}
+.tk-reading-sources article {
+  padding: 25px 0;
+  border-top: 1px solid #344754;
+  margin-top: 24px;
+}
+.tk-reading-sources article > span {
+  font-size: 13px;
+  color: var(--tk-bronze);
+}
+.tk-reading-sources h3 {
+  font-size: 20px;
+  line-height: 1.75;
+  margin: 10px 0 !important;
+}
+.tk-reading-sources article p {
+  font-size: 15px;
+  color: #adbdc8;
+  line-height: 1.9;
+}
+.tk-reading-sources details {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--tk-muted);
+}
+.tk-reading-sources summary {
+  min-height: 44px;
+  cursor: pointer;
+}
+.tk-reading-sources small {
+  display: block;
+  margin-top: 12px;
+}
+.tk-reading-sources article > div {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.tk-reading-sources a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--tk-bronze);
+  font-size: 14px;
+  min-height: 44px;
+  border-bottom: 1px solid #c0a16d55;
+}
+.tk-related {
+  padding: 42px 0;
+}
+.tk-related > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.tk-related a {
+  background: #102130;
+  border: 1px solid #344754;
+  padding: 22px;
+  min-width: 0;
+}
+.tk-related span {
+  font-size: 12px;
+  color: var(--tk-bronze);
+}
+.tk-related h3 {
+  font-size: 18px;
+  line-height: 1.7;
+  margin: 10px 0 !important;
+}
+.tk-related p {
+  font-size: 14px;
+  color: var(--tk-muted);
+  line-height: 1.8;
+}
+.tk-reading-footer {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid #344754;
+  padding-top: 24px;
+  margin-top: 28px;
+  font-size: 13px;
+  color: var(--tk-muted);
+}
+@media (max-width: 950px) {
+  .tk-comparison-desktop {
+    display: none;
+  }
+  .tk-comparison-mobile {
+    display: block;
+  }
+  .tk-comparison-caption {
+    font-size: 15px;
+    color: #667177;
+    margin-bottom: 16px !important;
+  }
+  .tk-comparison-mobile article {
+    padding: 22px;
+    background: #ede5d7;
+    border: 1px solid #d2c3a7;
+    margin-bottom: 14px;
+    min-width: 0;
+  }
+  .tk-comparison-mobile h4 {
+    margin: 0 0 18px;
+    font-size: 20px;
+    color: #77552e;
+  }
+  .tk-comparison-mobile dl,
+  .tk-comparison-mobile dd {
+    margin: 0;
+  }
+  .tk-comparison-mobile dl > div + div {
+    border-top: 1px solid #cfbea1;
+    margin-top: 18px;
+    padding-top: 18px;
+  }
+  .tk-comparison-mobile dt {
+    font-size: 13px;
+    font-weight: 600;
+    color: #746653;
+    margin-bottom: 8px;
+  }
+  .tk-comparison-mobile dd {
+    font-size: 16px;
+    line-height: 1.9;
+    color: #52626d;
+    word-break: keep-all;
+  }
+  .tk-intelligence .tk-comparison-mobile article {
+    background: #102130;
+    border-color: #344754;
+  }
+  .tk-intelligence .tk-comparison-mobile h4 {
+    color: var(--tk-bronze);
+  }
+  .tk-intelligence .tk-comparison-mobile dt,
+  .tk-intelligence .tk-comparison-caption {
+    color: #b8c7d1;
+  }
+  .tk-intelligence .tk-comparison-mobile dd {
+    color: #adbdc8;
+  }
+  .tk-intelligence .tk-comparison-mobile dl > div + div {
+    border-color: #344754;
+  }
+}
+@media (max-width: 640px) {
+  .tk-archive-search .tk-search input,
+  .tk-archive-search .tk-kind-select select {
+    font-size: 16px;
+  }
+  .tk-footer .tk-brand,
+  .tk-footer .tk-brand-plate {
+    max-width: 100%;
+  }
+  .tk-reading-header > a:first-child {
+    min-width: 0;
+  }
+  .tk-reading-header img {
+    max-width: 100%;
+  }
+  .tk-kind-select select {
+    width: 100%;
+    min-height: 48px;
+  }
+  .tk-search-results,
+  .tk-related > div {
+    grid-template-columns: 1fr;
+  }
+  .tk-search-result {
+    padding: 22px;
+  }
+  .tk-search-result h3 {
+    font-size: 19px;
+  }
+  .tk-search-summary > span:last-child {
+    font-size: 12px;
+  }
+  .tk-reading-header {
+    min-height: 90px;
+  }
+  .tk-reading-header img {
+    width: 180px;
+  }
+  .tk-reading-header > a:last-child {
+    font-size: 12px;
+  }
+  .tk-reading-intro h1,
+  .tk-reading-body > h1 {
+    font-size: 29px;
+    letter-spacing: -0.6px;
+  }
+  .tk-reading-intro > p {
+    font-size: 16px;
+  }
+  .tk-reading-intro {
+    padding: 30px 0 20px;
+  }
+  .tk-reading-body p {
+    font-size: 16px;
+    line-height: 1.95;
+  }
+  .tk-reading-body h2,
+  .tk-reading-sources > h2,
+  .tk-related > h2 {
+    font-size: 22px;
+  }
+  .tk-reading-sources {
+    padding: 22px;
+  }
+  .tk-reading-sources h3 {
+    font-size: 18px;
+  }
+  .tk-share {
+    gap: 8px;
+  }
+  .tk-share [role="status"] {
+    flex-basis: 100%;
+  }
+  .tk-comparison-mobile article {
+    padding: 20px;
+  }
+}
+
+/* Keep every section in the document; each landing viewport belongs to its target. */
+.tk-site main > .tk-section {
+  min-height: calc(100vh - var(--tk-header-height) - 1px);
+  min-height: calc(100dvh - var(--tk-header-height) - 1px);
+}
+
+@media (min-width: 951px) {
+  /* 메인 페이지의 모든 섹션 */
+  .tk-site:not(.tk-reading-page) main > .tk-section {
+    min-height: 0;
+    padding-top: 80px;
+    padding-bottom: 48px;
+  }
+
+  .tk-site:not(.tk-reading-page) .tk-container {
+    width: calc(100% - 128px);
+    max-width: 1400px;
+  }
+
+  .tk-site:not(.tk-reading-page) .tk-section-heading {
+    margin-bottom: 32px;
+  }
+}

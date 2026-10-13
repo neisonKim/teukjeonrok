@@ -1,0 +1,28 @@
+/* Reference-informed portrait; keep its face separate from copy on small screens. */
+.tk-hero-visual{position:absolute;inset:0;z-index:-1;overflow:hidden;isolation:isolate}
+.tk-hero-visual .tk-hero-img{z-index:0;object-position:75% top}
+.tk-hero-visual .tk-hero-shade{z-index:1;pointer-events:none}
+@media(max-width:950px){
+ .tk-hero{display:block;min-height:0;background:var(--tk-navy)}
+ .tk-hero-visual{position:relative;inset:auto;z-index:0;width:100%;height:clamp(380px,60vw,520px)}
+ .tk-hero-visual .tk-hero-img{opacity:1;object-position:80% center}
+ .tk-hero-visual .tk-hero-shade{background:linear-gradient(0deg,#07131f 0%,#07131f30 14%,transparent 30%)}
+ .tk-hero-inner{position:relative;padding-block:24px 32px}
+ .tk-hero h1{font-size:48px;max-width:100%}
+ .tk-hero-copy{max-width:100%;font-size:17px}
+ .tk-hero-bottom{position:static;inset:auto;padding-block:20px 26px;gap:18px}
+ .tk-hero-bottom p{font-size:12px;line-height:1.8}
+ .tk-hero-bottom a{font-size:14px}
+}
+@media(max-width:640px){
+ .tk-hero-visual{height:clamp(360px,52svh,440px)}
+ .tk-hero-visual .tk-hero-img{object-position:95% center}
+ .tk-hero-inner{padding-block:18px 28px}
+ .tk-hero h1{font-size:clamp(32px,8.5vw,40px);line-height:1.48;letter-spacing:-1.3px}
+ .tk-hero .tk-eyebrow{font-size:13px;line-height:1.7;letter-spacing:.2px;margin-bottom:20px}
+ .tk-hero-copy{font-size:16px;line-height:1.9;margin-top:22px!important}
+ .tk-hero .tk-actions{margin-top:26px}
+ .tk-hero .tk-button{font-size:14px}
+ .tk-hero-note{font-size:12px;line-height:1.8;margin-top:21px}
+ .tk-hero-bottom{align-items:flex-start}
+}
