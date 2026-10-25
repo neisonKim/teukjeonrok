@@ -15,7 +15,8 @@
  .tk-hero-bottom a{font-size:14px}
 }
 @media(max-width:640px){
- .tk-hero-visual{height:clamp(360px,52svh,440px)}
+ /* Keep the portrait crop stable when mobile browser chrome changes height. */
+ .tk-hero-visual{height:clamp(360px,100vw,440px)}
  .tk-hero-visual .tk-hero-img{object-position:95% center}
  .tk-hero-inner{padding-block:18px 28px}
  .tk-hero h1{font-size:clamp(32px,8.5vw,40px);line-height:1.48;letter-spacing:-1.3px}
