@@ -2,6 +2,9 @@
 .tk-hero-visual{position:absolute;inset:0;z-index:-1;overflow:hidden;isolation:isolate}
 .tk-hero-visual .tk-hero-img{z-index:0;object-position:75% top}
 .tk-hero-visual .tk-hero-shade{z-index:1;pointer-events:none}
+@media(min-width:951px){
+ .tk-hero-visual .tk-hero-img{object-position:75% -60px}
+}
 @media(max-width:950px){
  .tk-hero{display:block;min-height:0;background:var(--tk-navy)}
  .tk-hero-visual{position:relative;inset:auto;z-index:0;width:100%;height:clamp(380px,60vw,520px)}
